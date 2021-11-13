@@ -1,0 +1,24 @@
+{
+  "name": "aquarium-database",
+  "version": "1.0.0",
+  "description": "aquarium database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joel1842/aquarium-database.git"
+  },
+  "author": "joel lake",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joel1842/aquarium-database/issues"
+  },
+  "homepage": "https://github.com/joel1842/aquarium-database#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.15"
+  }
+}
