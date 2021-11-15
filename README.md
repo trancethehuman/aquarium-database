@@ -1,2 +1,2 @@
-# aquarium-database
- a fish & plant search tool!
+# aquarium-database-backend
+a fish and plant database
