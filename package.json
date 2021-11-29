@@ -4,7 +4,10 @@
   "description": "aquarium database",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":  "nodemon app.js",
+    "client": "cd client && cd aquarium-database-frontend && npm start",
+    "start": "concurrently \"npm run dev\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,7 @@
   "homepage": "https://github.com/joel1842/aquarium-database#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "concurrently": "^6.4.0",
     "ejs": "^3.1.6",
     "env": "^0.0.2",
     "express": "^4.17.1",

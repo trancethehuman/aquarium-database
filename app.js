@@ -1,3 +1,4 @@
+const { render } = require('ejs');
 const express = require('express');
 const app = express();
 const { Client } = require('pg');
@@ -18,22 +19,41 @@ client.connect((err) => {
 app.use(express.static(__dirname + '/public'));
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/img', express.static(__dirname + '/img'));
+1
+
+app.use((req, res, next) => {
+
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+  
+})
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.listen(3001);
 
-app.get('/', (req, res) => {
+  const getFishData = () => {
+      return new Promise((resolve, reject) => {
+        client.query('SELECT * FROM Goldfish;', (err, res) => {
+            if (err) {
+              reject(new Error("Error!"))
+            } else {
+                resolve(res.rows[0].name);
+            }
+        })
+      })
+  }
 
-    client.query('SELECT * FROM Goldfish;', (err, res) => {
-        if (err) {
-          console.log(err.stack)
-        } else {
-            console.log(res.rows[0].name)
-            console.log(res.rows[0])
-        }
+app.get('/goldfish', (req, res) => {
+    getFishData().then((results) => {
+        console.log(results);
+        res.json(results)
+    }).catch((err) => {
+        console.log("Promise rejection error: "+err);
     })
+
 })
 
 app.get('/browse', (req, res) => {
