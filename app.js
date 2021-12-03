@@ -36,39 +36,41 @@ app.listen(3001);
 
   const getFishData = () => {
       return new Promise((resolve, reject) => {
-        client.query('SELECT * FROM Goldfish;', (err, res) => {
+        client.query('SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM goldfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM catfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM gourami UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM pufferfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM cyprinids UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM loaches UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM characidae', (err, res) => {
             if (err) {
               reject(new Error("Error!"))
             } else {
-                resolve(res.rows[0].name);
+                resolve(res.rows);
             }
         })
       })
   }
 
-app.get('/goldfish', (req, res) => {
+  const getTetraData = () => {
+    return new Promise((resolve, reject) => {
+        client.query('SELECT * FROM characidae', (err, res) => {
+            if (err) {
+              reject(new Error("Error!"))
+            } else {
+                resolve(res.rows);
+            }
+        })
+      })
+  }
+
+  app.get('/goldfish', (req, res) => {
     getFishData().then((results) => {
         console.log(results);
         res.json(results)
     }).catch((err) => {
         console.log("Promise rejection error: "+err);
     })
-
 })
 
-app.get('/browse', (req, res) => {
-    res.render('browse');
+app.get('/tetra', (req, res) => {
+    getTetraData().then((results) => {
+        res.json(results)
+    }).catch((err) => {
+        console.log("Promise rejection error: "+err);
+    })
 })
-
-app.get('/guides', (req, res) => {
-    res.render('guides');
-})
-
-app.get('/compatibility', (req, res) => {
-    res.render('compatibility');
-})
-
-app.get('/tank', (req, res) => {
-    res.render('tank');
-})
-
