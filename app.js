@@ -2,7 +2,8 @@ const { render } = require('ejs');
 const express = require('express');
 const app = express();
 const { Client } = require('pg');
-const connectionString = 'postgres://uqnbftpplrfbme:697df29de3e98c8869fc16dba2964405f44714fff0d3bc9b53041c4bd433fb87@ec2-44-199-49-128.compute-1.amazonaws.com:5432/davgmak2f2f1ig'
+require('dotenv').config()
+const connectionString = process.env.connectionString;
 
 const client = new Client({
     connectionString,

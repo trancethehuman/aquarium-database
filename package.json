@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":  "nodemon app.js",
+    "dev": "nodemon app.js",
     "client": "cd client && cd aquarium-database-frontend && npm start",
     "start": "concurrently \"npm run dev\" \"npm run client\""
   },
@@ -22,6 +22,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "concurrently": "^6.4.0",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "env": "^0.0.2",
     "express": "^4.17.1",
