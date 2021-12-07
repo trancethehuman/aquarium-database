@@ -18,9 +18,10 @@ client.connect((err) => {
 })
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.json({limit: '1mb'}));
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/img', express.static(__dirname + '/img'));
-1
+
 
 app.use((req, res, next) => {
 
@@ -37,7 +38,7 @@ app.listen(3001);
 
   const getFishData = () => {
       return new Promise((resolve, reject) => {
-        client.query('SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM goldfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM catfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM gourami UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM pufferfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM cyprinids UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM loaches UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel" FROM characidae', (err, res) => {
+        client.query('SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM goldfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM catfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM gourami UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM pufferfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM cyprinids UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM loaches UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM characidae', (err, res) => {
             if (err) {
               reject(new Error("Error!"))
             } else {
@@ -75,3 +76,7 @@ app.get('/tetra', (req, res) => {
         console.log("Promise rejection error: "+err);
     })
 })
+
+app.post('/favorites', (req, res) => {
+    console.log(req.body);
+}) 
