@@ -7,6 +7,8 @@ const e = require('express');
 require('dotenv').config()
 const connectionString = process.env.connectionString;
 
+app.listen(process.env.PORT || 3001);
+
 const client = new Client({
     connectionString,
     ssl: {
@@ -36,8 +38,6 @@ app.use((req, res, next) => {
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-
-app.listen(process.env.PORT || 3001);
 
 app.get('/goldfish', (req, res) => {
     client.query('SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM goldfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM catfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM gourami UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM pufferfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM cyprinids UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM loaches UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM characidae', (err, response) => {
