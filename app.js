@@ -22,7 +22,7 @@ client.connect((err) => {
 })
 
 app.use(express.static(__dirname + '/public'));
-app.use(express.json({limit: '1mb'}));
+app.use(express.json());
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/img', express.static(__dirname + '/img'));
 
@@ -30,14 +30,19 @@ app.use((req, res, next) => {
 
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.set("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS")
+  res.set("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
+  res.set("Access-Control-Allow-Credentials", "true")
 
   next();
-  
+
 })
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+    res.render('home.ejs')
+})
 
 app.get('/goldfish', (req, res) => {
     client.query('SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM goldfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM catfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM gourami UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM pufferfish UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM cyprinids UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM loaches UNION SELECT pic1, name, "scientificName","sizeCM", "careLevel", "plants" FROM characidae', (err, response) => {
@@ -112,6 +117,7 @@ app.post('/favlist', (req, res) => {
             data.rows.forEach((row) => {
                 if (row.userID === user) {
                     const fishInfo = {
+                        id: row.id,
                         pic: row.pic1,
                         fishName: row.fishName
                     }
@@ -120,6 +126,20 @@ app.post('/favlist', (req, res) => {
             })
 
             res.json(favFish);
+        }
+    })
+})
+
+app.delete('/removefav/:id/', (req, res) => {
+
+    const id = req.params.id;
+    const queryString = 'DELETE FROM "favoritesList" WHERE id =';
+
+    client.query(queryString + id, (err, response) => {
+        if (err) {
+            console.log('Error:', err);
+        } else {
+            console.log('Deleted Favorite!')
         }
     })
 })
