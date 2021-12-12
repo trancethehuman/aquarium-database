@@ -5,7 +5,7 @@ const app = express();
 const { Client } = require('pg');
 const e = require('express');
 require('dotenv').config()
-const connectionString = process.env.connectionString;
+const connectionString = process.env.CONNECTION_STRING;
 
 app.listen(process.env.PORT || 3001);
 
@@ -18,7 +18,7 @@ const client = new Client({
 
 client.connect((err) => {
     if (err) throw err;
-    console.log('Connected!');
+    console.log('Connected to database!');
 })
 
 app.use(express.static(__dirname + '/public'));
